@@ -8,35 +8,92 @@
 import XCTest
 
 class GifsList_DemoAppUITests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
+    
+    var app: XCUIApplication!
+    
+    override func setUp() {
         continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+        app = XCUIApplication()
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
+    
+    func testDisplaysListView() {
         app.launch()
-
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        let collectionView = XCUIApplication().collectionViews.element
+        XCTAssert(collectionView.exists)
+        XCTAssertTrue(app.isDisplayingListView)
     }
-
+    
+    func testDisplaysBookmarks() {
+        app.launch()
+        XCTAssertTrue(app.isDisplayingListView)
+        
+        let collectionView = XCUIApplication().collectionViews.element
+        XCTAssert(collectionView.exists)
+        let bookmarksButton = XCUIApplication().navigationBars.buttons["bookmarksButton"]
+        XCTAssert(bookmarksButton.exists)
+        bookmarksButton.tap()
+        XCTAssertTrue(app.isDisplayingBookmarks)
+    }
+    
+    func testDisplaysDetailView() {
+        app.launch()
+        XCTAssertTrue(app.isDisplayingListView)
+        
+        let collectionView = XCUIApplication().collectionViews.element
+        XCTAssert(collectionView.exists)
+        
+        let firstCell = collectionView.cells["firstCell"]
+        firstCell.tap()
+        
+        XCTAssertTrue(app.isDisplayingDetailView)
+    }
+    
+    func testUpdatesBookmarkIconAfterChangeInDetailView() {
+        app.launch()
+        XCTAssertTrue(app.isDisplayingListView)
+        
+        let collectionView = XCUIApplication().collectionViews.element
+        XCTAssert(collectionView.exists)
+        
+        var firstCell = app.collectionViews.children(matching: .any).element(boundBy: 0)
+        if firstCell.exists {
+            firstCell.tap()
+        }
+        XCTAssertTrue(app.isDisplayingDetailView)
+        
+        let bookmarksButton = XCUIApplication().navigationBars.buttons["bookmarksButtonDetailView"]
+        XCTAssert(bookmarksButton.exists)
+        bookmarksButton.tap()
+        
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        
+        XCTAssertTrue(app.isDisplayingListView)
+        
+        firstCell = app.collectionViews.children(matching: .any).element(boundBy: 0)
+        let cellBookmarkButton = firstCell.buttons["bookmarkCellButton"]
+        XCTAssert(cellBookmarkButton.exists)
+        XCTAssertTrue(cellBookmarkButton.isSelected)
+    }
+    
     func testLaunchPerformance() throws {
         if #available(macOS 10.15, iOS 13.0, tvOS 13.0, *) {
-            // This measures how long it takes to launch your application.
             measure(metrics: [XCTApplicationLaunchMetric()]) {
                 XCUIApplication().launch()
             }
         }
+    }
+}
+
+extension XCUIApplication {
+    var isDisplayingListView: Bool {
+        return otherElements["listView"].exists
+    }
+    
+    var isDisplayingBookmarks: Bool {
+        return otherElements["bookmarksView"].exists
+    }
+    
+    var isDisplayingDetailView: Bool {
+        return otherElements["detailView"].exists
     }
 }

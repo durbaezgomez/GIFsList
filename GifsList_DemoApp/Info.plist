@@ -51,6 +51,12 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>$(PRODUCT_NAME) wants to access your photo library to save images.</string>
+	<key>API_KEY</key>
+	<string>dc6zaTOxFJmzC</string>
+	<key>API</key>
+	<string>https://api.giphy.com/v1/gifs/</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

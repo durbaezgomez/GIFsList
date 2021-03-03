@@ -1,0 +1,20 @@
+PODS:
+  - EasyPeasy (1.10.0)
+  - SwiftyGif (5.4.0)
+
+DEPENDENCIES:
+  - EasyPeasy
+  - SwiftyGif
+
+SPEC REPOS:
+  trunk:
+    - EasyPeasy
+    - SwiftyGif
+
+SPEC CHECKSUMS:
+  EasyPeasy: b9b1bae024d21a7dfa9bad26d6826d88348cc6f1
+  SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
+
+PODFILE CHECKSUM: fc2fd1e17e3ce925d1c1ddf15df4b4722868f279
+
+COCOAPODS: 1.9.3
